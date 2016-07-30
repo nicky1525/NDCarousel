@@ -31,7 +31,7 @@ class NDCarousel: UIView, UIScrollViewDelegate {
     //make it usable from storyboard or just programmatically
     //give chance to chose between array of images, array of strings or array of url and use a library to download images asynchronously"
 
-    override init(frame: CGRect) {
+    private override init(frame: CGRect) {
         super.init(frame: frame)
     }
     
@@ -50,7 +50,7 @@ class NDCarousel: UIView, UIScrollViewDelegate {
         
         let scrollSize = scrollView.frame.size
         
-        for var i = 0 ; i < self.images.count; i++ {
+        for i in 0 ..< self.images.count {
             let slideRect = CGRect(x: scrollSize.width * CGFloat(i), y: 0, width: scrollSize.width, height: scrollSize.height)
             let slide = UIView(frame: slideRect)
             slide.backgroundColor = UIColor.whiteColor()
@@ -75,10 +75,10 @@ class NDCarousel: UIView, UIScrollViewDelegate {
     
     // Call this method to animate the carousel using the desired interval. Default is set to 6.0 seconds
     func autoScrollWithInterval(interval: NSTimeInterval) {
-        animationTimer = NSTimer.scheduledTimerWithTimeInterval(interval, target: self, selector: Selector("autoScroll"), userInfo: nil, repeats: true)
+        animationTimer = NSTimer.scheduledTimerWithTimeInterval(interval, target: self, selector:#selector(autoScroll), userInfo: nil, repeats: true)
     }
     
-    private func autoScroll() {
+    @objc private func autoScroll() {
         var frame = CGRect()
         if currentPage! + 1  < pageControl.numberOfPages {
             frame.origin.x = CGFloat(currentPage! + 1) * CGFloat(self.frame.width)
