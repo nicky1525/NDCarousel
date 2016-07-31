@@ -8,32 +8,38 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, NDCarouselDelegate {
     @IBOutlet weak var carousel: NDCarousel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-       
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        let names = ["photo5", "photo6","photo5", "photo6", "photo5"]
-        var images = Array<UIImage>()
+        let names = ["photo1", "photo2","photo3", "photo4", "photo5"]
+        var images = [UIImage]()
         for photo in names {
             let image = UIImage(named: photo)
             images.append(image!)
         }
-        carousel.setUpWithImages(images)
+        
+        carousel.initWithImages(images, animationInterval: 4, displaySlideIndicator: true)
+            .setSlideBackgroundColor(UIColor.blackColor()) // Not visible in this case cause the images is as big as the slide, default is White
+            .setSlideIndicatorTintColor(UIColor.whiteColor()) // Default is lightGray
+            .setSlideIndicatorSelectedColor(UIColor.blackColor()) // Default is DarkGray
+        
+        // Conform to the NDCarouselDelegate if you need the user to be able to tap on it
+        carousel.delegate = self
     }
     
+    func didSelectImageAtIndex(index:Int) {
+        // Use the index of the image to do what you need..
+        print("Tap on image number \(index + 1)")
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
-
-
 }
 
