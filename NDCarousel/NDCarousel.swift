@@ -39,12 +39,12 @@ public class NDCarousel: UIView {
     
     /*
      make it usable from storyboard or just programmatically
-     add touch
      pinch to zoom
      stop autoscroll for few seconds when user interacts
      add vertical arrangment
-     give chance to chose between array of images, array of strings and use a library to download images asynchronously"
+     give chance to chose between array of images, array of strings and use a library to download images asynchronously
      chose animation direction
+     handle screen rotation
     */
 
     private override init(frame: CGRect) {
