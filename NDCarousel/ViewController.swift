@@ -19,7 +19,7 @@ class ViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        let names = ["photo1", "photo2", "photo3", "photo4"]
+        let names = ["photo5", "photo6","photo5", "photo6", "photo5"]
         var images = Array<UIImage>()
         for photo in names {
             let image = UIImage(named: photo)
