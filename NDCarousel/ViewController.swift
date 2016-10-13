@@ -24,7 +24,7 @@ class ViewController: UIViewController, NDCarouselDelegate {
             images.append(image!)
         }
         
-        carousel.initWithImages(images, animationInterval: 4, displaySlideIndicator: true)
+       carousel = NDCarousel().initWithImages(images, animationInterval: 4, displaySlideIndicator: true)
             .setSlideBackgroundColor(UIColor.black) // Not visible in this case cause the images is as big as the slide, default is White
             .setSlideIndicatorTintColor(UIColor.white) // Default is lightGray
             .setSlideIndicatorSelectedColor(UIColor.black) // Default is DarkGray
