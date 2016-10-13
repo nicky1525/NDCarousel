@@ -23,10 +23,10 @@ enum AnimationDirection {
 */
 
 @objc public protocol NDCarouselDelegate {
-    func didSelectImageAtIndex(_ index:Int)
+    func didSelectImageAtIndex(index:Int)
 }
 
-open class NDCarousel: UIView {
+public class NDCarousel: UIView {
     fileprivate var slideIndicator: UIPageControl!
     fileprivate var images = [UIImage]()
     fileprivate var animationTimer: Timer?
@@ -34,7 +34,7 @@ open class NDCarousel: UIView {
     fileprivate var currentPage:Int?
     fileprivate var isSlideIndicatorVisible = true
     fileprivate var slideBackgroundColor = UIColor.white
-    open  var delegate: NDCarouselDelegate?
+    public  var delegate: NDCarouselDelegate?
     
     
     /*
@@ -47,7 +47,7 @@ open class NDCarousel: UIView {
      handle screen rotation
     */
 
-    fileprivate override init(frame: CGRect) {
+    private override init(frame: CGRect) {
         super.init(frame: frame)
     }
     
@@ -55,46 +55,46 @@ open class NDCarousel: UIView {
         super.init(coder: aDecoder)
     }
     
-    open func initWithImages(_ images:[UIImage], animationInterval:Float, displaySlideIndicator:Bool) -> NDCarousel{
+    public func initWithImages(images:[UIImage], animationInterval:Float, displaySlideIndicator:Bool) -> NDCarousel{
         // Setup all the images
-        setUpWithImages(images)
+        setUpWithImages(images: images)
         
         isSlideIndicatorVisible = displaySlideIndicator
         
         // Add Animation
         if  animationInterval > 0 {
-            autoScrollWithInterval(TimeInterval(animationInterval))
+            autoScrollWithInterval(interval: TimeInterval(animationInterval))
         }
         
         return self
     }
     
-    open func setSlideIndicatorSelectedColor(_ color:UIColor) -> NDCarousel {
+    public func setSlideIndicatorSelectedColor(color:UIColor) -> NDCarousel {
         slideIndicator.currentPageIndicatorTintColor = color
         return self
     }
     
-    open func setSlideIndicatorTintColor(_ color:UIColor) -> NDCarousel {
+    public func setSlideIndicatorTintColor(color:UIColor) -> NDCarousel {
         slideIndicator.pageIndicatorTintColor = color
         return self
     }
     
-    open func setSlideBackgroundColor(_ color:UIColor) -> NDCarousel {
+    public func setSlideBackgroundColor(color:UIColor) -> NDCarousel {
         slideBackgroundColor = color
         return self
     }
     
     
     // MARK: Private
-    @objc fileprivate func tapHandler(_ sender:UITapGestureRecognizer) {
+    @objc private func tapHandler(sender:UITapGestureRecognizer) {
         let imageViewTapped = sender.view as! UIImageView
         let image = imageViewTapped.image
         let index = images.index(of: image!)
-        delegate?.didSelectImageAtIndex(index!)
+        delegate?.didSelectImageAtIndex(index: index!)
     }
     
     // Call this method to load the carousel images passing an array of UIImages
-    fileprivate func setUpWithImages(_ images:[UIImage]) {
+    private func setUpWithImages(images:[UIImage]) {
         self.images = images
         scrollView = UIScrollView(frame: self.frame)
         scrollView.delegate = self
@@ -142,11 +142,11 @@ open class NDCarousel: UIView {
     }
     
     // Call this method to animate the carousel using the desired interval. If timeinterval is 0 no animation
-    fileprivate func autoScrollWithInterval(_ interval: TimeInterval) {
+    private func autoScrollWithInterval(interval: TimeInterval) {
         animationTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector:#selector(autoScroll), userInfo: nil, repeats: true)
     }
     
-    @objc fileprivate func autoScroll() {
+    @objc private func autoScroll() {
         var frame = CGRect()
         if currentPage! + 1  < slideIndicator.numberOfPages {
             frame.origin.x = CGFloat(currentPage! + 1) * CGFloat(self.frame.width)

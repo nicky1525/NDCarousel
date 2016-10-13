@@ -10,9 +10,22 @@ import XCTest
 @testable import NDCarousel
 
 class NDCarouselTests: XCTestCase {
+    let names = ["photo1", "photo2","photo3", "photo4", "photo5"]
+    var images = [UIImage]()
+
+    var carousel:NDCarousel!
+    var carousel1:NDCarousel!
     
     override func setUp() {
         super.setUp()
+        
+        for photo in names {
+            let image = UIImage(named: photo)
+            images.append(image!)
+        }
+        
+        carousel = NDCarousel().initWithImages(images: images, animationInterval: 7.0, displaySlideIndicator: true)
+        carousel1 = NDCarousel().initWithImages(images: [], animationInterval: 2.0, displaySlideIndicator: false)
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
@@ -21,9 +34,26 @@ class NDCarouselTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
+    func testNumberOfSlides() {
+        
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+    }
+    
+    func testDisplayIndicatorIsVisible() {
+        
+    }
+    
+    func testSliderIndicatorSelectedColor() {
+        
+    }
+    
+    func testSliderIndicatorTintColor() {
+        
+    }
+    
+    func testSliderIndicatorNumberOfPages() {
+        
     }
     
     func testPerformanceExample() {
