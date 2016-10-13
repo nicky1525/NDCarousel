@@ -15,7 +15,7 @@ class ViewController: UIViewController, NDCarouselDelegate {
         super.viewDidLoad()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         let names = ["photo1", "photo2","photo3", "photo4", "photo5"]
         var images = [UIImage]()
@@ -25,15 +25,15 @@ class ViewController: UIViewController, NDCarouselDelegate {
         }
         
         carousel.initWithImages(images, animationInterval: 4, displaySlideIndicator: true)
-            .setSlideBackgroundColor(UIColor.blackColor()) // Not visible in this case cause the images is as big as the slide, default is White
-            .setSlideIndicatorTintColor(UIColor.whiteColor()) // Default is lightGray
-            .setSlideIndicatorSelectedColor(UIColor.blackColor()) // Default is DarkGray
+            .setSlideBackgroundColor(UIColor.black) // Not visible in this case cause the images is as big as the slide, default is White
+            .setSlideIndicatorTintColor(UIColor.white) // Default is lightGray
+            .setSlideIndicatorSelectedColor(UIColor.black) // Default is DarkGray
         
         // Conform to the NDCarouselDelegate if you need the user to be able to tap on it
         carousel.delegate = self
     }
     
-    func didSelectImageAtIndex(index:Int) {
+    func didSelectImageAtIndex(_ index:Int) {
         // Use the index of the image to do what you need..
         print("Tap on image number \(index + 1)")
     }

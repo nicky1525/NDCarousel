@@ -23,31 +23,31 @@ enum AnimationDirection {
 */
 
 @objc public protocol NDCarouselDelegate {
-    func didSelectImageAtIndex(index:Int)
+    func didSelectImageAtIndex(_ index:Int)
 }
 
-public class NDCarousel: UIView {
-    private var slideIndicator: UIPageControl!
-    private var images = [UIImage]()
-    private var animationTimer: NSTimer?
-    private var scrollView:UIScrollView!
-    private var currentPage:Int?
-    private var isSlideIndicatorVisible = true
-    private var slideBackgroundColor = UIColor.whiteColor()
-    public  var delegate: NDCarouselDelegate?
+open class NDCarousel: UIView {
+    fileprivate var slideIndicator: UIPageControl!
+    fileprivate var images = [UIImage]()
+    fileprivate var animationTimer: Timer?
+    fileprivate var scrollView:UIScrollView!
+    fileprivate var currentPage:Int?
+    fileprivate var isSlideIndicatorVisible = true
+    fileprivate var slideBackgroundColor = UIColor.white
+    open  var delegate: NDCarouselDelegate?
     
     
     /*
      make it usable from storyboard or just programmatically
      pinch to zoom
      stop autoscroll for few seconds when user interacts
-     add vertical arrangment
+     add vertical arrangement
      give chance to chose between array of images, array of strings and use a library to download images asynchronously
      chose animation direction
      handle screen rotation
     */
 
-    private override init(frame: CGRect) {
+    fileprivate override init(frame: CGRect) {
         super.init(frame: frame)
     }
     
@@ -55,7 +55,7 @@ public class NDCarousel: UIView {
         super.init(coder: aDecoder)
     }
     
-    public func initWithImages(images:[UIImage], animationInterval:Float, displaySlideIndicator:Bool) -> NDCarousel{
+    open func initWithImages(_ images:[UIImage], animationInterval:Float, displaySlideIndicator:Bool) -> NDCarousel{
         // Setup all the images
         setUpWithImages(images)
         
@@ -63,44 +63,44 @@ public class NDCarousel: UIView {
         
         // Add Animation
         if  animationInterval > 0 {
-            autoScrollWithInterval(NSTimeInterval(animationInterval))
+            autoScrollWithInterval(TimeInterval(animationInterval))
         }
         
         return self
     }
     
-    public func setSlideIndicatorSelectedColor(color:UIColor) -> NDCarousel {
+    open func setSlideIndicatorSelectedColor(_ color:UIColor) -> NDCarousel {
         slideIndicator.currentPageIndicatorTintColor = color
         return self
     }
     
-    public func setSlideIndicatorTintColor(color:UIColor) -> NDCarousel {
+    open func setSlideIndicatorTintColor(_ color:UIColor) -> NDCarousel {
         slideIndicator.pageIndicatorTintColor = color
         return self
     }
     
-    public func setSlideBackgroundColor(color:UIColor) -> NDCarousel {
+    open func setSlideBackgroundColor(_ color:UIColor) -> NDCarousel {
         slideBackgroundColor = color
         return self
     }
     
     
     // MARK: Private
-    @objc private func tapHandler(sender:UITapGestureRecognizer) {
+    @objc fileprivate func tapHandler(_ sender:UITapGestureRecognizer) {
         let imageViewTapped = sender.view as! UIImageView
         let image = imageViewTapped.image
-        let index = images.indexOf(image!)
+        let index = images.index(of: image!)
         delegate?.didSelectImageAtIndex(index!)
     }
     
     // Call this method to load the carousel images passing an array of UIImages
-    private func setUpWithImages(images:[UIImage]) {
+    fileprivate func setUpWithImages(_ images:[UIImage]) {
         self.images = images
         scrollView = UIScrollView(frame: self.frame)
         scrollView.delegate = self
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
-        scrollView.pagingEnabled = true
+        scrollView.isPagingEnabled = true
         scrollView.bounces = false
         
         for i in 0 ..< self.images.count {
@@ -120,8 +120,8 @@ public class NDCarousel: UIView {
             slide.backgroundColor = slideBackgroundColor
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: slide.frame.size.width, height: slide.frame.height))
             imageView.image = images[i]
-            imageView.contentMode = .ScaleAspectFill
-            imageView.userInteractionEnabled = true
+            imageView.contentMode = .scaleAspectFill
+            imageView.isUserInteractionEnabled = true
             let gestureRecogniser = UITapGestureRecognizer(target: self, action:#selector(tapHandler))
             imageView.addGestureRecognizer(gestureRecogniser)
             slide.addSubview(imageView)
@@ -131,8 +131,8 @@ public class NDCarousel: UIView {
         scrollView.contentSize = CGSize(width: scrollView.frame.size.width * CGFloat(images.count), height: scrollView.frame.size.height)
         slideIndicator = UIPageControl(frame: CGRect(x: 0, y: scrollView.frame.size.height - 20, width: scrollView.frame.size.width, height: 20))
         slideIndicator.numberOfPages = images.count
-        slideIndicator.pageIndicatorTintColor = UIColor.lightGrayColor()
-        slideIndicator.currentPageIndicatorTintColor = UIColor.grayColor()
+        slideIndicator.pageIndicatorTintColor = UIColor.lightGray
+        slideIndicator.currentPageIndicatorTintColor = UIColor.gray
         currentPage = slideIndicator.currentPage
 
         self.addSubview(scrollView)
@@ -142,11 +142,11 @@ public class NDCarousel: UIView {
     }
     
     // Call this method to animate the carousel using the desired interval. If timeinterval is 0 no animation
-    private func autoScrollWithInterval(interval: NSTimeInterval) {
-        animationTimer = NSTimer.scheduledTimerWithTimeInterval(interval, target: self, selector:#selector(autoScroll), userInfo: nil, repeats: true)
+    fileprivate func autoScrollWithInterval(_ interval: TimeInterval) {
+        animationTimer = Timer.scheduledTimer(timeInterval: interval, target: self, selector:#selector(autoScroll), userInfo: nil, repeats: true)
     }
     
-    @objc private func autoScroll() {
+    @objc fileprivate func autoScroll() {
         var frame = CGRect()
         if currentPage! + 1  < slideIndicator.numberOfPages {
             frame.origin.x = CGFloat(currentPage! + 1) * CGFloat(self.frame.width)
@@ -162,7 +162,7 @@ public class NDCarousel: UIView {
 
 //MARK: ScrollViewDelegate
 extension NDCarousel:  UIScrollViewDelegate {
-    public func scrollViewDidScroll(scrollView: UIScrollView) {
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pageWidth = scrollView.frame.size.width
         let page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1
         slideIndicator.currentPage = Int(page)
